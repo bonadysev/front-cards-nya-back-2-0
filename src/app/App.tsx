@@ -42,8 +42,8 @@ function App() {
             </AppBar>
             <Container>
                 <Routes>
-                    <Route path={'/'} element={<Profile/>}/>
                     <Route path={'/login'} element={<Login/>}/>
+                    <Route path={'/'} element={<Profile/>}/>
                     <Route path={'/signUp'} element={<SignUp2/>}/>
                     <Route path={'/forgot'} element={<ForgotPas/>}/>
                     <Route path={'/set-new-password'} element={<NewPas/>}/>
