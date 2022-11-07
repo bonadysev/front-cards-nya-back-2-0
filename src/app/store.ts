@@ -5,14 +5,14 @@ import {AppActionsType, appReducer} from "./app-reducer";
 import {AuthActionsType, authReducer} from "../bll/authReducer";
 import {RegistrationActionType, registrationReducer} from "../features/Login/RegistrationReducer";
 import {ForgotPasActionsType, forgotPasReducer} from "../features/Login/ForgotPasReducer";
-import {NewPasReducer} from "../features/Login/NewPasReducer";
+import {newPasReducer} from "../features/Login/NewPasReducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
     auth: authReducer,
     registration: registrationReducer,
     forgotPas: forgotPasReducer,
-    NewPasReducer: NewPasReducer
+    newPasReducer: newPasReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));

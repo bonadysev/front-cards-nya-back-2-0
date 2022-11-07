@@ -7,7 +7,7 @@ const initialState = {
 }
 type InitialStateType = typeof initialState
 
-export const NewPasReducer = (state: InitialStateType = initialState, action: newPassActionsType): InitialStateType => {
+export const newPasReducer = (state: InitialStateType = initialState, action: newPassActionsType): InitialStateType => {
     switch (action.type) {
         case "NEW-PAS":
             return {...state, passwordChanged: action.val}
@@ -22,6 +22,7 @@ export const newPasAC = (val: boolean) =>
 
 // thunks
 export const newPassTC = (token: any, password: string) => (dispatch: any) => {
+
     let newGenPas = {
         password: password,
         resetPasswordToken: token
