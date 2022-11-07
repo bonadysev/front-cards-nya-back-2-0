@@ -46,7 +46,7 @@ function App() {
                     <Route path={'/'} element={<Profile/>}/>
                     <Route path={'/signUp'} element={<SignUp2/>}/>
                     <Route path={'/forgot'} element={<ForgotPas/>}/>
-                    <Route path={'/set-new-password'} element={<NewPas/>}/>
+                    <Route path={'/set-new-password/:token'} element={<NewPas/>}/>
                     <Route path={'/404'} element={<h1>404: PAGE NOT FOUND</h1>}/>
                     <Route path="*" element={<Navigate to={'/404'}/>}/>
                 </Routes>

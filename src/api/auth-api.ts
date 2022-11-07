@@ -19,6 +19,9 @@ export const authAPI = {
     },
     forgot(data:any) {
         return instance.post('auth/forgot', data)
+    },
+    newPassword(data:any) {
+        return instance.post('auth/set-new-password',data)
     }
 }
 

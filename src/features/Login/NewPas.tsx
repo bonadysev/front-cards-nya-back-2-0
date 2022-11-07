@@ -9,10 +9,17 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {ErrorSnackbar} from "../../components/ErrorSnackbar";
-import {useAppDispatch} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "../../app/store";
+import {useParams} from "react-router-dom";
+import {newPassTC} from "./NewPasReducer";
+import { Login } from './Login';
 
 export const NewPas = () => {
     const dispatch = useAppDispatch()
+    const passwordChanged = useAppSelector(state => state.NewPasReducer)
+
+    console.log(useParams())
+    const {token} = useParams()
 
     const formik = useFormik({
         initialValues: {
@@ -20,35 +27,38 @@ export const NewPas = () => {
         },
         onSubmit: values => {
             console.log(values.password)
-
+            dispatch(newPassTC(token, values.password))
         },
     });
 
     return (
         <>
-            <Grid container justifyContent={'center'}>
-                <Grid item justifyContent={'center'}>
-                    <form onSubmit={formik.handleSubmit}>
-                        <FormControl>
-                            <Typography variant="h6" component="h5">Create new password</Typography>
-                            <FormGroup>
-                                <TextField
-                                    label="password"
-                                    margin="normal"
-                                    {...formik.getFieldProps('password')}/>
-                                <Typography>
-                                    Create new password and we will send you further instructions to email
-                                </Typography>
-                                <Button type={'submit'} variant={'contained'} color={'primary'}>
-                                    Create new password
-                                </Button>
-                            </FormGroup>
-                        </FormControl>
-                    </form>
-                    <ErrorSnackbar/>
-                </Grid>
-            </Grid>
-
+            {
+                passwordChanged
+                    ? <Login/>
+                    :  <Grid container justifyContent={'center'}>
+                        <Grid item justifyContent={'center'}>
+                            <form onSubmit={formik.handleSubmit}>
+                                <FormControl>
+                                    <Typography variant="h6" component="h5">Create new password</Typography>
+                                    <FormGroup>
+                                        <TextField
+                                            label="password"
+                                            margin="normal"
+                                            {...formik.getFieldProps('password')}/>
+                                        <Typography>
+                                            Create new password and we will send you further instructions to email
+                                        </Typography>
+                                        <Button type={'submit'} variant={'contained'} color={'primary'}>
+                                            Create new password
+                                        </Button>
+                                    </FormGroup>
+                                </FormControl>
+                            </form>
+                            <ErrorSnackbar/>
+                        </Grid>
+                    </Grid>
+            }
 
         </>
     )
