@@ -1,8 +1,22 @@
 import {Dispatch} from 'redux'
 import {authAPI, LoginParamsType} from "../api/auth-api";
-import {setAppErrorAC} from "../app/app-reducer";
+import {setAppErrorAC} from "./app-reducer";
 import {AxiosError} from "axios";
+import {ThunkType} from "./store";
 
+export type LoginResponseType = {
+    _id: string
+    email: string
+    name: string
+    avatar?: string
+    publicCardPacksCount: number // количество колод
+    created: Date
+    updated: Date
+    isAdmin: boolean
+    verified: boolean // подтвердил ли почту
+    rememberMe: boolean
+    error?: string
+}
 
 const initialState = {
     isLoggedIn: false,
@@ -20,11 +34,12 @@ export const authReducer = (state: InitialStateType = initialState, action: Auth
 }
 
 // actions
+// TODO
 export const setIsLoggedInAC = (value: boolean, data: any) =>
     ({type: 'login/SET-IS-LOGGED-IN', value, data} as const)
 
 // thunks
-export const loginTC = (data: LoginParamsType) => (dispatch: any) => {
+export const loginTC = (data: LoginParamsType): ThunkType => (dispatch) => {
     authAPI.login(data)
         .then(res => {
             dispatch(setIsLoggedInAC(true, res.data))
@@ -33,6 +48,17 @@ export const loginTC = (data: LoginParamsType) => (dispatch: any) => {
             console.log(error.message)
             dispatch(setAppErrorAC(error.message))
         })
+}
+
+
+export const _loginTC = (data: LoginParamsType): ThunkType => async (dispatch) => {
+    try {
+        const res = await authAPI.login(data)
+        dispatch(setIsLoggedInAC(true, res.data))
+    } catch (error: any) {
+        console.log(error.message)
+        dispatch(setAppErrorAC(error.message))
+    }
 }
 
 export const logoutTC = () => (dispatch: Dispatch<AuthActionsType>) => {
@@ -48,3 +74,4 @@ export const logoutTC = () => (dispatch: Dispatch<AuthActionsType>) => {
 
 // types
 export type AuthActionsType = ReturnType<typeof setIsLoggedInAC>
+

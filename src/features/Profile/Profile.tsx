@@ -1,10 +1,10 @@
 import React from 'react';
 import Typography from "@mui/material/Typography";
-import {useAppDispatch, useAppSelector} from "../../app/store";
+import {useAppSelector} from "../../bll/store";
 import {Navigate} from "react-router-dom";
 
 export const Profile = () => {
-    const dispatch = useAppDispatch()
+
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     if (!isLoggedIn) {

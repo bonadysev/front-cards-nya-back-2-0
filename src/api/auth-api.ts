@@ -1,27 +1,33 @@
-import axios, {AxiosResponse} from 'axios'
+import axios from 'axios'
+import {LoginResponseType} from "../bll/authReducer";
 
 const instance = axios.create({
     // baseURL: 'http://localhost:7542/2.0/',
-    baseURL: 'https://neko-back.herokuapp.com/2.0/',
+    // baseURL: 'https://neko-back.herokuapp.com/2.0/',
+    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
     withCredentials: true
 })
 
 // api
 export const authAPI = {
     login(data: LoginParamsType) {
-        return instance.post<any>('auth/login', data)
+        return instance.post<LoginResponseType>('auth/login', data)
     },
     logout() {
-        return instance.delete<any>('auth/me')
+        return instance.delete<{info: string}>('auth/me')
     },
     registration(data: RegistrationParamsType) {
         return instance.post('auth/register', data)
     },
-    forgot(data:any) {
+    forgot(data:ForgotParamsType) {
         return instance.post('auth/forgot', data)
     },
-    newPassword(data:any) {
+    newPassword(data:NewPasswordParamsType) {
         return instance.post('auth/set-new-password',data)
+    },
+    //TODO
+    authMe() {
+        return instance.post<LoginResponseType>('/auth/me', {})
     }
 }
 
@@ -35,4 +41,15 @@ export type LoginParamsType = {
 export type RegistrationParamsType = {
     email: string
     password: string
+}
+
+export type ForgotParamsType = {
+    email: string
+    from: string
+    message: string
+}
+
+export type NewPasswordParamsType = {
+    password: string
+    resetPasswordToken: string
 }

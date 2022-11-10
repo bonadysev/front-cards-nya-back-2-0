@@ -1,6 +1,7 @@
-import {authAPI} from "../../api/auth-api";
+import {authAPI} from "../api/auth-api";
 import {AxiosError} from "axios";
-import {setAppErrorAC} from "../../app/app-reducer";
+import {setAppErrorAC} from "./app-reducer";
+import {Dispatch} from "redux";
 
 
 const initialState = {
@@ -22,10 +23,9 @@ export const registeredAC = (value: boolean) =>
     ({type: 'registration/REGISTERED', value} as const)
 
 // thunks
-export const registeredCT = (data: {email: string, password: string}) => (dispatch: any) => {
+export const registeredCT = (data: {email: string, password: string}) => (dispatch: Dispatch) => {
     authAPI.registration(data)
         .then((res) => {
-            console.log(res)
             dispatch(registeredAC(true))
         })
         .catch((error: AxiosError) => {

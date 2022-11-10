@@ -7,10 +7,10 @@ import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
 import {Link} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "../../app/store";
-import {forgotTC} from "./ForgotPasReducer";
-import {CheckEmail} from "./CheckEmail";
-import {ErrorSnackbar} from "../../components/ErrorSnackbar";
+import {useAppDispatch, useAppSelector} from "../../bll/store";
+import {forgotTC} from "../../bll/forgotPasReducer";
+import {CheckEmail} from "../CheckEmail/CheckEmail";
+
 
 
 export const ForgotPas = () => {
@@ -57,7 +57,6 @@ export const ForgotPas = () => {
                                     </FormGroup>
                                 </FormControl>
                             </form>
-                            <ErrorSnackbar/>
                         </Grid>
                     </Grid>
 

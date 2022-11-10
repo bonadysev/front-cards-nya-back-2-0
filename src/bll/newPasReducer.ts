@@ -1,13 +1,14 @@
-import {authAPI} from "../../api/auth-api";
+import {authAPI} from "../api/auth-api";
 import {AxiosError} from "axios";
-import {setAppErrorAC} from "../../app/app-reducer";
+import {setAppErrorAC} from "./app-reducer";
+import {Dispatch} from "redux";
 
 const initialState = {
     passwordChanged: false
 }
 type InitialStateType = typeof initialState
 
-export const newPasReducer = (state: InitialStateType = initialState, action: newPassActionsType): InitialStateType => {
+export const newPasReducer = (state: InitialStateType = initialState, action: NewPassActionsType): InitialStateType => {
     switch (action.type) {
         case "NEW-PAS":
             return {...state, passwordChanged: action.val}
@@ -21,7 +22,7 @@ export const newPasAC = (val: boolean) =>
     ({type: 'NEW-PAS', val} as const)
 
 // thunks
-export const newPassTC = (token: any, password: string) => (dispatch: any) => {
+export const newPassTC = (token: string, password: string) => (dispatch: Dispatch) => {
 
     let newGenPas = {
         password: password,
@@ -38,4 +39,4 @@ export const newPassTC = (token: any, password: string) => (dispatch: any) => {
 }
 
 // types
-export type newPassActionsType = ReturnType<typeof newPasAC>
+export type NewPassActionsType = ReturnType<typeof newPasAC>

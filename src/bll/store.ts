@@ -1,11 +1,11 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, legacy_createStore as createStore} from "redux";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {AppActionsType, appReducer} from "./app-reducer";
-import {AuthActionsType, authReducer} from "../bll/authReducer";
-import {RegistrationActionType, registrationReducer} from "../features/Login/RegistrationReducer";
-import {ForgotPasActionsType, forgotPasReducer} from "../features/Login/ForgotPasReducer";
-import {newPasReducer} from "../features/Login/NewPasReducer";
+import {AuthActionsType, authReducer} from "./authReducer";
+import {RegistrationActionType, registrationReducer} from "./registrationReducer";
+import {ForgotPasActionsType, forgotPasReducer} from "./forgotPasReducer";
+import {newPasReducer, NewPassActionsType} from "./newPasReducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -23,6 +23,7 @@ export type AppRootActionsType =
     | RegistrationActionType
     | AppActionsType
     | ForgotPasActionsType
+    | NewPassActionsType
 
 export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppRootActionsType>
 export type DispatchActionType = ThunkDispatch<AppRootStateType, unknown, AppRootActionsType>

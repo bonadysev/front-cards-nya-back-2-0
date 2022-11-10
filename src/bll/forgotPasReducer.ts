@@ -1,6 +1,7 @@
-import {authAPI} from "../../api/auth-api";
-import {setAppErrorAC} from "../../app/app-reducer";
+import {authAPI} from "../api/auth-api";
+import {setAppErrorAC} from "./app-reducer";
 import {AxiosError} from "axios";
+import {Dispatch} from "redux";
 
 
 const initialState = {
@@ -22,7 +23,7 @@ export const setForgotPasAC = (val: boolean) =>
     ({type: 'FORGOT-PAS/SET-FORGOT-PAS', val} as const)
 
 // thunks
-export const forgotTC = (email: string) => (dispatch: any) => {
+export const forgotTC = (email: string) => (dispatch: Dispatch) => {
     let dataForgot = {
         email: email,
         from: "test-front-admin <ai73a@yandex.by>",

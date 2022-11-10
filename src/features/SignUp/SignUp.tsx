@@ -1,7 +1,7 @@
 import React from 'react';
-import {useAppDispatch, useAppSelector} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {useFormik} from "formik";
-import {registeredCT} from "./RegistrationReducer";
+import {registeredCT} from "../../bll/registrationReducer";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {Navigate} from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import * as yup from 'yup'
+
 
 
 type FormikErrorType = {

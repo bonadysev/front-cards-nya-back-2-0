@@ -8,14 +8,14 @@ import logo from "../common/img/logo.svg";
 import {Login} from "../features/Login/Login";
 import Button from "@mui/material/Button";
 import {Profile} from "../features/Profile/Profile";
-import {useAppDispatch, useAppSelector} from "./store";
+import {useAppDispatch, useAppSelector} from "../bll/store";
 import {logoutTC} from "../bll/authReducer";
 import LinearProgress from '@mui/material/LinearProgress';
-import {SignUp2} from "../features/Login/SignUp2";
-import {ForgotPas} from "../features/Login/ForgotPas";
-import {NewPas} from "../features/Login/NewPas";
+import {SignUp2} from "../features/SignUp/SignUp2";
+import {ForgotPas} from "../features/ForgotPassword/ForgotPas";
+import {NewPas} from "../features/NewPassword/NewPas";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
-
+import {Page404} from "../features/Page404/Page404";
 
 
 function App() {
@@ -26,29 +26,38 @@ function App() {
         dispatch(logoutTC())
     }
 
+    enum ROUTES {
+        PROFILE = '/',
+        LOGIN = '/login',
+        SIGNUP = '/signUp',
+        FORGOT = '/forgot',
+        P404 = '/404',
+        SET_NEW_PAS = '/set-new-password/:token'
+    }
+
     return (
         <div className="App">
             <ErrorSnackbar/>
             <AppBar position="static" color={"transparent"}>
-                <div><img src={logo} alt="логотип" />
+                <div><img src={logo} alt="логотип"/>
                     <Typography variant="h5" component="h5">friday level project</Typography>
                     {isLoggedIn && <Button onClick={logOutHandler}>Log out</Button>}
-                    <Link to = {'/'}> Profile </Link>
-                    <Link to = {'/login'}> Sign in </Link>
-                    <Link to = {'/signUp'}> Sign Up </Link>
-                    <Link to = {'/forgot'}> Forgot password  </Link>
+                    <Link to={ROUTES.PROFILE}> Profile </Link>
+                    <Link to={ROUTES.LOGIN}> Sign in </Link>
+                    <Link to={ROUTES.SIGNUP}> Sign Up </Link>
+                    <Link to={ROUTES.FORGOT}> Forgot password </Link>
                     {status === 'loading' && <LinearProgress/>}
                 </div>
             </AppBar>
             <Container>
                 <Routes>
-                    <Route path={'/login'} element={<Login/>}/>
-                    <Route path={'/'} element={<Profile/>}/>
-                    <Route path={'/signUp'} element={<SignUp2/>}/>
-                    <Route path={'/forgot'} element={<ForgotPas/>}/>
-                    <Route path={'/set-new-password/:token'} element={<NewPas/>}/>
-                    <Route path={'/404'} element={<h1>404: PAGE NOT FOUND</h1>}/>
-                    <Route path="*" element={<Navigate to={'/404'}/>}/>
+                    <Route path={ROUTES.PROFILE} element={<Profile/>}/>
+                    <Route path={ROUTES.LOGIN} element={<Login/>}/>
+                    <Route path={ROUTES.SIGNUP} element={<SignUp2/>}/>
+                    <Route path={ROUTES.FORGOT} element={<ForgotPas/>}/>
+                    <Route path={ROUTES.SET_NEW_PAS} element={<NewPas/>}/>
+                    <Route path={ROUTES.P404} element={<Page404/>}/>
+                    <Route path="*" element={<Navigate to={ROUTES.P404}/>}/>
                 </Routes>
             </Container>
         </div>

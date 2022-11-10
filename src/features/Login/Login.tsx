@@ -5,16 +5,13 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
-// import {loginTC} from "./auth-reducer";
-import {useDispatch} from "react-redux";
-import {useAppDispatch, useAppSelector} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {loginTC} from "../../bll/authReducer";
 import Typography from "@mui/material/Typography";
-import {ErrorSnackbar} from "../../components/ErrorSnackbar";
+
 
 type FormikErrorType = {
     email?: string
@@ -86,8 +83,8 @@ export const Login = () => {
                                 {...formik.getFieldProps('rememberMe')}
                             />}/>
 
-                        <Typography  variant="h6">
-                            <Link color="inherit" to = {'/forgot'}> Forgot password? </Link>
+                        <Typography variant="h6">
+                            <Link color="inherit" to={'/forgot'}> Forgot password? </Link>
                         </Typography>
 
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
@@ -102,6 +99,5 @@ export const Login = () => {
                 </FormControl>
             </form>
         </Grid>
-        <ErrorSnackbar/>
     </Grid>
 }

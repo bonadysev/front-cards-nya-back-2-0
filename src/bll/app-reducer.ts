@@ -1,11 +1,12 @@
-import {AxiosError} from "axios";
 
 
-const initialState: InitialStateType = {
-    status: 'idle',
-    error: null,
+
+const initialState = {
+    status: 'idle' as RequestStatusType,
+    error: null as string | null,
     isInitialized: false
 }
+export type InitialStateType = typeof initialState
 
 export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
 
@@ -21,11 +22,13 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
     }
 }
 
-export type InitialStateType = {
+export type _InitialStateType = {
     status: RequestStatusType
     error: string | null
     isInitialized: boolean
 }
+
+
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
