@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
@@ -10,21 +10,30 @@ import Button from "@mui/material/Button";
 import {Profile} from "../features/Profile/Profile";
 import {useAppDispatch, useAppSelector} from "../bll/store";
 import {logoutTC} from "../bll/authReducer";
-import LinearProgress from '@mui/material/LinearProgress';
 import {SignUp2} from "../features/SignUp/SignUp2";
 import {ForgotPas} from "../features/ForgotPassword/ForgotPas";
 import {NewPas} from "../features/NewPassword/NewPas";
 import {ErrorSnackbar} from "../components/ErrorSnackbar";
 import {Page404} from "../features/Page404/Page404";
+import {Loader} from "../components/Loader";
+import {authMeTC} from "../bll/app-reducer";
 
 
 function App() {
     const dispatch = useAppDispatch()
     const status = useAppSelector((state) => state.app.status)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
+
     const logOutHandler = () => {
         dispatch(logoutTC())
     }
+
+    React.useEffect(() => {
+        dispatch(authMeTC())
+    }, [])
+
+    if (!isInitialized) return <Loader/>
 
     enum ROUTES {
         PROFILE = '/',
@@ -46,8 +55,8 @@ function App() {
                     <Link to={ROUTES.LOGIN}> Sign in </Link>
                     <Link to={ROUTES.SIGNUP}> Sign Up </Link>
                     <Link to={ROUTES.FORGOT}> Forgot password </Link>
-                    {status === 'loading' && <LinearProgress/>}
                 </div>
+                {status === 'loading' && <Loader/>}
             </AppBar>
             <Container>
                 <Routes>

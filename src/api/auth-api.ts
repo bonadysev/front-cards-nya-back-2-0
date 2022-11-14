@@ -25,7 +25,6 @@ export const authAPI = {
     newPassword(data:NewPasswordParamsType) {
         return instance.post('auth/set-new-password',data)
     },
-    //TODO
     authMe() {
         return instance.post<LoginResponseType>('/auth/me', {})
     }

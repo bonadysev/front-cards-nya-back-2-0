@@ -1,6 +1,5 @@
-import {Dispatch} from 'redux'
 import {authAPI, LoginParamsType} from "../api/auth-api";
-import {setAppErrorAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
 import {ThunkType} from "./store";
 
@@ -20,26 +19,30 @@ export type LoginResponseType = {
 
 const initialState = {
     isLoggedIn: false,
-    data: {}
+    data: {} as LoginResponseType
 }
 type InitialStateType = typeof initialState
 
 export const authReducer = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
     switch (action.type) {
-        case 'login/SET-IS-LOGGED-IN':
+        case 'LOGIN/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value, data: action.data}
+
         default:
             return state
     }
 }
 
+
 // actions
 // TODO
 export const setIsLoggedInAC = (value: boolean, data: any) =>
-    ({type: 'login/SET-IS-LOGGED-IN', value, data} as const)
+    ({type: 'LOGIN/SET-IS-LOGGED-IN', value, data} as const)
+
 
 // thunks
 export const loginTC = (data: LoginParamsType): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     authAPI.login(data)
         .then(res => {
             dispatch(setIsLoggedInAC(true, res.data))
@@ -47,6 +50,9 @@ export const loginTC = (data: LoginParamsType): ThunkType => (dispatch) => {
         .catch((error: AxiosError) => {
             console.log(error.message)
             dispatch(setAppErrorAC(error.message))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC("idle"))
         })
 }
 
@@ -61,7 +67,7 @@ export const _loginTC = (data: LoginParamsType): ThunkType => async (dispatch) =
     }
 }
 
-export const logoutTC = () => (dispatch: Dispatch<AuthActionsType>) => {
+export const logoutTC = (): ThunkType => (dispatch) => {
     authAPI.logout()
         .then((res) => {
             dispatch(setIsLoggedInAC(false, res.data))
