@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {registeredCT} from "../../bll/registrationReducer";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {Navigate} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import {ErrorSnackbar} from "../../components/ErrorSnackbar";
 
@@ -119,9 +119,9 @@ export function SignUp2() {
                             </Button>
 
                             <p>Already have a account?
-                                <a href={'http://localhost:3000/login'}
-                                > Sign In
-                                </a>
+                                <Typography variant="h6">
+                                    <Link color="inherit" to={'/login'}>Sign In</Link>
+                                </Typography>
                             </p>
                         </FormGroup>
                     </FormControl>

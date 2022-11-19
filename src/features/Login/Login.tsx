@@ -91,9 +91,9 @@ export const Login = () => {
                             Sign in
                         </Button>
                         <p>Already have an account?
-                            <a href={'http://localhost:3000/signUp'}
-                            > Sign Up
-                            </a>
+                            <Typography variant="h6">
+                                <Link color="inherit" to={'/signUp'}>Sign Up</Link>
+                            </Typography>
                         </p>
                     </FormGroup>
                 </FormControl>
