@@ -68,12 +68,16 @@ export const _loginTC = (data: LoginParamsType): ThunkType => async (dispatch) =
 }
 
 export const logoutTC = (): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
     authAPI.logout()
         .then((res) => {
             dispatch(setIsLoggedInAC(false, res.data))
         })
         .catch((error: AxiosError) => {
             console.log(error.message)
+        })
+        .finally(()=>{
+            dispatch(setAppStatusAC("idle"))
         })
 }
 

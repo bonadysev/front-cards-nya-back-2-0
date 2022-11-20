@@ -1,5 +1,5 @@
 import {authAPI} from "../api/auth-api";
-import {setAppErrorAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
 import {Dispatch} from "redux";
 
@@ -33,6 +33,7 @@ password recovery link:
 link</a>
 </div>`
     }
+    dispatch(setAppStatusAC("loading"))
     authAPI.forgot(dataForgot)
         .then((res) => {
             dispatch(setForgotPasAC(true))
@@ -41,6 +42,9 @@ link</a>
             // const err = error as AxiosError
             console.log("error: " + error.message)
             dispatch(setAppErrorAC(error.message))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC("idle"))
         })
 }
 

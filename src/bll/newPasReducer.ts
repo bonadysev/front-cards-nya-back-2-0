@@ -1,6 +1,6 @@
 import {authAPI} from "../api/auth-api";
 import {AxiosError} from "axios";
-import {setAppErrorAC} from "./app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {Dispatch} from "redux";
 
 const initialState = {
@@ -28,6 +28,7 @@ export const newPassTC = (token: string, password: string) => (dispatch: Dispatc
         password: password,
         resetPasswordToken: token
     }
+    dispatch(setAppStatusAC("loading"))
     authAPI.newPassword(newGenPas)
         .then((res) => {
             dispatch(newPasAC(true))
@@ -35,6 +36,9 @@ export const newPassTC = (token: string, password: string) => (dispatch: Dispatc
         .catch((error: AxiosError) => {
             console.log("error: " + error.message)
             dispatch(setAppErrorAC(error.message))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC("idle"))
         })
 }
 
