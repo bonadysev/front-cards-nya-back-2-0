@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import AppBar from '@mui/material/AppBar';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {Route, Navigate, Routes} from 'react-router-dom'
 import logo from "../common/img/logo.svg";
@@ -15,9 +14,8 @@ import {ErrorSnackbar} from "../components/ErrorSnackbar";
 import {Page404} from "../features/Page404/Page404";
 import {Loader} from "../components/Loader";
 import {authMeTC} from "../bll/app-reducer";
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
 import {PacksList} from "../features/Packs/PacksList";
+import ResponsiveAppBar from "../features/Profile/ResponsiveAppBar";
 
 
 function App() {
@@ -25,7 +23,7 @@ function App() {
     const status = useAppSelector((state) => state.app.status)
     const isInitialized = useAppSelector(state => state.app.isInitialized)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const ava = useAppSelector(state => state.auth.data.avatar)
+
 
     React.useEffect(() => {
         dispatch(authMeTC())
@@ -49,8 +47,7 @@ function App() {
             <AppBar position="static" color={"transparent"}>
                 <div>
                     <img src={logo} alt="логотип" />
-                    <Typography variant="h5" component="h5">friday level project</Typography>
-                    {isLoggedIn && <Stack direction="row" spacing={3}><Avatar>{ava}</Avatar></Stack>}
+                    {isLoggedIn && <ResponsiveAppBar/>}
                 </div>
                 {status === 'loading' && <Loader/>}
             </AppBar>
