@@ -1,5 +1,5 @@
 import React from 'react';
-import CardsTable from "./CardsTable";
+import PacksTable from "./PacksTable";
 import Typography from "@mui/material/Typography";
 import {Navigate} from "react-router-dom";
 import {useAppSelector} from "../../bll/store";
@@ -14,7 +14,7 @@ export const PacksList = () => {
     return (
         <>
             <Typography variant="h5" component="h5">Packs List</Typography>
-            <CardsTable/>
+            <PacksTable/>
         </>
     );
 };
