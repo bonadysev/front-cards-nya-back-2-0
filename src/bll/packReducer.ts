@@ -10,16 +10,20 @@ const initialState = {
 }
 type InitialStateType = typeof initialState
 
-export const packReducer = (state:InitialStateType = initialState, action: any):InitialStateType => {
+export const packReducer = (state:InitialStateType = initialState, action: PackReducerActionsType):InitialStateType => {
     switch (action.type) {
+        case 'PACKS/SET-PACKS':
+            return {...state, cardPacks: action.cardPacks}
         default:
             return state
     }
 }
 
 // actions
+const setCardPacks = (cardPacks:any) => ({type: 'PACKS/SET-PACKS', cardPacks} as const)
 
 // thunks
 
 //type
-
+export type PackReducerActionsType =
+    | ReturnType<typeof setCardPacks>

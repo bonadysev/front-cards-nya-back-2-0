@@ -3,7 +3,7 @@ import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import {Route, Navigate, Routes} from 'react-router-dom'
-import logo from "../common/img/logo.svg";
+import logo from "../assets/img/logo.svg";
 import {Login} from "../features/Login/Login";
 import {Profile} from "../features/Profile/Profile";
 import {useAppDispatch, useAppSelector} from "../bll/store";

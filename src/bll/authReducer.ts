@@ -1,7 +1,8 @@
-import {authAPI, LoginParamsType} from "../api/auth-api";
+import {authAPI, LoginParamsType, UpdateNickNameType} from "../api/auth-api";
 import {setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
 import {ThunkType} from "./store";
+
 
 export type LoginResponseType = {
     _id: string
@@ -27,17 +28,30 @@ export const authReducer = (state: InitialStateType = initialState, action: Auth
     switch (action.type) {
         case 'LOGIN/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value, data: action.data}
+        case "AUTH/UPDATE-NICKNAME":
+            return {...state, data: action.value}
 
+        //TODO Проделаю работу по повторению глубокого копирования
+        // case 'AUTH/UPDATE-NICKNAME':
+        //     return {
+        //         ...state,
+        //         data: {
+        //             ...state.data,
+        //             name: action.value
+        //         }
+        //     }
         default:
             return state
     }
 }
 
-
 // actions
-// TODO
+
 export const setIsLoggedInAC = (value: boolean, data: any) =>
     ({type: 'LOGIN/SET-IS-LOGGED-IN', value, data} as const)
+
+export const updateNickNameAC = (value: any) =>
+    ({type: 'AUTH/UPDATE-NICKNAME', value} as const)
 
 
 // thunks
@@ -76,12 +90,34 @@ export const logoutTC = (): ThunkType => (dispatch) => {
         .catch((error: AxiosError) => {
             console.log(error.message)
         })
-        .finally(()=>{
+        .finally(() => {
             dispatch(setAppStatusAC("idle"))
         })
 }
 
+export const updateNickNameTC = (newValue: string): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    const data: UpdateNickNameType = {
+        name: newValue,
+        avatar: ''
+    }
+    authAPI.updateNickName(data)
+        .then((res) => {
+            dispatch(updateNickNameAC(res.data.updatedUser))
+        })
+        .catch((error: AxiosError) => {
+            console.log(error.message)
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC("idle"))
+        })
+
+}
+
 
 // types
-export type AuthActionsType = ReturnType<typeof setIsLoggedInAC>
+export type AuthActionsType =
+    | ReturnType<typeof setIsLoggedInAC>
+    | ReturnType<typeof updateNickNameAC>
+
 

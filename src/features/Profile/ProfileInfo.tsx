@@ -5,33 +5,37 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
-import {logoutTC} from "../../bll/authReducer";
+import {logoutTC, updateNickNameTC} from "../../bll/authReducer";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
 import logo from "../Profile/img/profile.jpg";
 import {Link} from "react-router-dom";
+import {EditableSpan} from "../../components/EditableSpan";
 
 
 type ProfileInfoPropsType = {
     avatar?: string
     name: string
-    publicCardPacksCount:number
-    email:string
+    publicCardPacksCount: number
+    email: string
 }
 
-export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({avatar, name,publicCardPacksCount,email}) => {
+export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({avatar, name, publicCardPacksCount, email}) => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const logOutHandler = () => {
         dispatch(logoutTC())
     }
+    const onTitleChangeHandler = (newValue: string) => {
+        dispatch(updateNickNameTC(newValue))
+    }
 
     return (
-        <div >
+        <div>
             <Typography variant="h6">
                 <Link color="inherit" to={'/packlist'}>Back to Packs List</Link>
             </Typography>
-            <Card sx={{maxWidth: 340}}>
+            <Card sx={{maxWidth: 340, margin: '0 auto'}}>
                 <CardMedia
                     component="img"
                     height="300"
@@ -43,7 +47,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({avatar, name,public
                         Personal Information
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        <div> Nickname:{name}</div>
+                        <EditableSpan value={name} onChange={onTitleChangeHandler}/>
                         <div> Email:{email}</div>
                         <div> Number of decks: {publicCardPacksCount}</div>
                     </Typography>

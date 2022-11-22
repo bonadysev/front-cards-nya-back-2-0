@@ -27,6 +27,9 @@ export const authAPI = {
     },
     authMe() {
         return instance.post<LoginResponseType>('/auth/me', {})
+    },
+    updateNickName(data:UpdateNickNameType) {
+        return instance.put('/auth/me', data)
     }
 }
 
@@ -51,4 +54,9 @@ export type ForgotParamsType = {
 export type NewPasswordParamsType = {
     password: string
     resetPasswordToken: string
+}
+
+export type UpdateNickNameType = {
+    name: string
+    avatar: string
 }
