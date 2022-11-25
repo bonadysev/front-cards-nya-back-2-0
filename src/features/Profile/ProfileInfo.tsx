@@ -10,6 +10,7 @@ import {useAppDispatch, useAppSelector} from "../../bll/store";
 import logo from "../Profile/img/profile.jpg";
 import {Link} from "react-router-dom";
 import {EditableSpan} from "../../components/EditableSpan";
+import {setAppErrorAC} from "../../bll/app-reducer";
 
 
 type ProfileInfoPropsType = {
@@ -19,7 +20,7 @@ type ProfileInfoPropsType = {
     email: string
 }
 
-export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({avatar, name, publicCardPacksCount, email}) => {
+export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({name, publicCardPacksCount, email}) => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
@@ -27,7 +28,12 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({avatar, name, publi
         dispatch(logoutTC())
     }
     const onTitleChangeHandler = (newValue: string) => {
-        dispatch(updateNickNameTC(newValue))
+        if (newValue.trim() !== '') {
+            dispatch(updateNickNameTC(newValue))
+        } else {
+            dispatch(setAppErrorAC('field required'))
+        }
+
     }
 
     return (
