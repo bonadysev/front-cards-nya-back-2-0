@@ -6,51 +6,42 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import {useAppDispatch, useAppSelector} from "../../bll/store";
+import {GetPacksTC} from "../../bll/packReducer";
 
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number,
-) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 export default function PacksTable() {
+    const dispatch = useAppDispatch()
+    const cardPacks = useAppSelector(state => state.pack.cardPacks)
+
+    React.useEffect(() => {
+        dispatch(GetPacksTC())
+    }, [])
+
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Dessert (100g serving)</TableCell>
-                        <TableCell align="right">Calories</TableCell>
-                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell align="right">Cards</TableCell>
+                        <TableCell align="right">Last Updated</TableCell>
+                        <TableCell align="right">Created by</TableCell>
+                        <TableCell align="right">Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {cardPacks.map((cardPack) => (
                         <TableRow
-                            key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            key={cardPack.name}
+                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell component="th" scope="row">
-                                {row.name}
+                                {cardPack.name}
                             </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
-                            <TableCell align="right">{row.carbs}</TableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
+                            <TableCell align="right">{cardPack.cardsCount}</TableCell>
+                            <TableCell align="right">{cardPack.updated}</TableCell>
+                            <TableCell align="right">{cardPack.user_name}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -27,13 +27,15 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({name, publicCardPac
     const logOutHandler = () => {
         dispatch(logoutTC())
     }
-    const onTitleChangeHandler = (newValue: string) => {
-        if (newValue.trim() !== '') {
-            dispatch(updateNickNameTC(newValue))
-        } else {
-            dispatch(setAppErrorAC('field required'))
-        }
 
+    //TODO
+    const onTitleChangeHandler = (newValue: string) => {
+        if (newValue.trim() !== '' && newValue !== name) {
+            dispatch(updateNickNameTC(newValue))
+        }
+        else {
+            dispatch(setAppErrorAC('fill in the field or enter a new nickname'))
+        }
     }
 
     return (
@@ -52,7 +54,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = ({name, publicCardPac
                     <Typography gutterBottom variant="h5" component="div">
                         Personal Information
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="h6" color="text.secondary">
                         <EditableSpan value={name} onChange={onTitleChangeHandler}/>
                         <div> Email:{email}</div>
                         <div> Number of decks: {publicCardPacksCount}</div>
