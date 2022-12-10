@@ -7,15 +7,18 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {GetPacksTC} from "../../bll/packReducer";
+import {getPacksTC} from "../../bll/packReducer";
+import {Button} from "@mui/material";
+
 
 
 export default function PacksTable() {
     const dispatch = useAppDispatch()
     const cardPacks = useAppSelector(state => state.pack.cardPacks)
 
+
     React.useEffect(() => {
-        dispatch(GetPacksTC())
+        dispatch(getPacksTC())
     }, [])
 
     return (
@@ -42,6 +45,9 @@ export default function PacksTable() {
                             <TableCell align="right">{cardPack.cardsCount}</TableCell>
                             <TableCell align="right">{cardPack.updated}</TableCell>
                             <TableCell align="right">{cardPack.user_name}</TableCell>
+                            <Button>Add</Button>
+                            <Button>Update</Button>
+                            <Button>Delete</Button>
                         </TableRow>
                     ))}
                 </TableBody>

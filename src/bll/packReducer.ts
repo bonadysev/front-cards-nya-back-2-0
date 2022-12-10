@@ -28,12 +28,12 @@ export const packReducer = (state: InitialStateType = initialState, action: Pack
         case 'PACKS/SET-PACKS':
             return {
                 ...state,
-                cardPacks: action.cardPacks,
-                cardPacksTotalCount: action.cardPacks,
-                maxCardsCount: action.cardPacks,
-                minCardsCount: action.cardPacks,
-                page: action.cardPacks,
-                pageCount: action.cardPacks
+                cardPacks: action.cardPacks
+            }
+        case 'PACKS/SET-PAGE-COUNT':
+            return {
+                ...state,
+                pageCount: action.pageCount
             }
         default:
             return state
@@ -42,9 +42,10 @@ export const packReducer = (state: InitialStateType = initialState, action: Pack
 
 // actions
 const setCardPacks = (cardPacks: any) => ({type: 'PACKS/SET-PACKS', cardPacks} as const)
+const setPageCount = (pageCount:any)=> ({type: 'PACKS/SET-PAGE-COUNT',pageCount} as const)
 
 // thunks
-export const GetPacksTC = (): ThunkType => (dispatch) => {
+export const getPacksTC = (): ThunkType => (dispatch) => {
     dispatch(setAppStatusAC("loading"))
     packAPI.getPack({})
         .then((res) => {
@@ -58,6 +59,22 @@ export const GetPacksTC = (): ThunkType => (dispatch) => {
         })
 }
 
+export const pageCount = (): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    packAPI.getPack({})
+        .then((res) => {
+            dispatch(setPageCount(res.data.pageCount))
+        })
+        .catch((error: AxiosError) => {
+            dispatch(setAppErrorAC(error.message))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC("idle"))
+        })
+}
+
 //type
 export type PackReducerActionsType =
     | ReturnType<typeof setCardPacks>
+    | ReturnType<typeof setPageCount>
+
