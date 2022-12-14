@@ -8,7 +8,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {getPacksTC} from "../../bll/packReducer";
 import Button from "@mui/material/Button";
 
 
@@ -39,9 +38,9 @@ export default function PacksTable2() {
     const cardPacks = useAppSelector(state => state.pack.cardPacks)
 
 
-    React.useEffect(() => {
-        dispatch(getPacksTC())
-    }, [])
+    // React.useEffect(() => {
+    //     dispatch(getPacksTC())
+    // }, [])
 
     return (
         <>

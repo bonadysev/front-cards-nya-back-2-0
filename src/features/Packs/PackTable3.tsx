@@ -21,11 +21,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {getPacksTC} from "../../bll/packReducer";
+import {getPacksTC, setCurrentPage, setPageCount} from "../../bll/packReducer";
 import Button from "@mui/material/Button";
 import RangeSlider from "./RangeSlider";
 import SplitButton from "./SplitButton";
 import StateTextFields from "./StateTextFields";
+
 
 
 const headCells = [
@@ -119,11 +120,11 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
     return (
         <>
-            <Toolbar >
+            <Toolbar>
                 <StateTextFields/>
                 <RangeSlider/>
                 <SplitButton/>
-                <Button variant="contained" >Add new pack</Button>
+                <Button variant="contained">Add new pack</Button>
             </Toolbar>
             <Toolbar
                 sx={{
@@ -175,19 +176,23 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 
 export default function PackTable3() {
     const dispatch = useAppDispatch()
-    const rows = useAppSelector(state => state.pack.cardPacks)
+    const packs = useAppSelector(state => state.pack.cardPacks)
+    const pageCount = useAppSelector(state => state.pack.pageCount)
+    const page = useAppSelector(state => state.pack.page)
+    const cardsPacksTotalCount = useAppSelector(state => state.pack.cardPacksTotalCount)
 
-    React.useEffect(() => {
-        dispatch(getPacksTC())
-    }, [])
+    // const [rowsPerPage, setRowsPerPage] = React.useState(3);
+    // const [page, setPage] = React.useState(0);
 
     const [order, setOrder] = React.useState<any>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof any>('name');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
-    const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+
+    React.useEffect(() => {
+        dispatch(getPacksTC(pageCount, page))
+    }, [pageCount])
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -201,7 +206,7 @@ export default function PackTable3() {
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         console.log(event.target.checked)
         if (event.target.checked) {
-            const newSelected = rows.map((n) => n.name);
+            const newSelected = packs.map((n) => n.name);
             setSelected(newSelected);
             return;
         }
@@ -228,31 +233,43 @@ export default function PackTable3() {
         setSelected(newSelected);
     };
 
+//Pagination
     const handleChangePage = (event: unknown, newPage: number) => {
-        setPage(newPage);
+        dispatch(setCurrentPage(newPage+1))
+        // setPage(newPage);
     };
 
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        console.log(event.target.value)
-        setPage(0);
+        // setRowsPerPage(parseInt(event.target.value, 10));
+        // console.log(event.target.value)
+        // setPage(0);
+        dispatch(setPageCount(parseInt(event.target.value)))
     };
 
     const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDense(event.target.checked);
-        console.log(event.target.checked)
+        console.log('handleChangeDense' + event.target.checked)
     };
 
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * pageCount - packs.length) : 0;
 
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
                 <EnhancedTableToolbar numSelected={selected.length}/>
+                <TablePagination
+                    rowsPerPageOptions={[3, 5, 10, 25]}
+                    component="div"
+                    count={cardsPacksTotalCount}
+                    rowsPerPage={pageCount}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
                 <TableContainer>
                     <Table
                         sx={{minWidth: 750}}
@@ -265,12 +282,12 @@ export default function PackTable3() {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={packs.length}
                         />
                         <TableBody>
                             {/* if you don't need to support IE11, you can replace the `stableSort` call with:
               rows.sort(getComparator(order, orderBy)).slice() */}
-                            {rows.map((row, index) => {
+                            {packs.map((row, index) => {
                                 const isItemSelected = isSelected(row.name);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -306,7 +323,7 @@ export default function PackTable3() {
                                             <TableCell align="right">{row.cardsCount}</TableCell>
                                             <TableCell align="right">{row.created}</TableCell>
                                             <TableCell align="right">{row.user_name}</TableCell>
-                                            <Button variant="outlined" size="small">Edit</Button>
+                                            <Button variant="contained">Edit</Button>
                                         </TableRow>
 
                                     </>
@@ -324,15 +341,15 @@ export default function PackTable3() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                {/*<TablePagination*/}
+                {/*    rowsPerPageOptions={[3, 5, 10, 25]}*/}
+                {/*    component="div"*/}
+                {/*    count={packs.length}*/}
+                {/*    rowsPerPage={pageCount}*/}
+                {/*    page={page}*/}
+                {/*    onPageChange={handleChangePage}*/}
+                {/*    onRowsPerPageChange={handleChangeRowsPerPage}*/}
+                {/*/>*/}
             </Paper>
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}

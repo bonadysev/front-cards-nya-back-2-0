@@ -17,9 +17,16 @@ const initialState = {
     maxCardsCount: 0,
     minCardsCount: 0,
     page: 1,
-    pageCount: 5,
+    pageCount: 3,
     token: '',
     tokenDeathTime: 0,
+
+    packName: '',
+    sortBy: '',
+    order: 'desc',
+    packOwner: 'all',
+    minSort: 0,
+    maxSort: 0,
 }
 type InitialStateType = typeof initialState
 
@@ -35,19 +42,27 @@ export const packReducer = (state: InitialStateType = initialState, action: Pack
                 ...state,
                 pageCount: action.pageCount
             }
+        case 'PACKS/SET-CURRENT-PAGE':
+            return {
+                ...state,
+                page: action.data
+            }
         default:
             return state
     }
 }
 
 // actions
-const setCardPacks = (cardPacks: any) => ({type: 'PACKS/SET-PACKS', cardPacks} as const)
-const setPageCount = (pageCount:any)=> ({type: 'PACKS/SET-PAGE-COUNT',pageCount} as const)
+export const setCardPacks = (cardPacks: any) => ({type: 'PACKS/SET-PACKS', cardPacks} as const)
+export const setPageCount = (pageCount: any) => ({type: 'PACKS/SET-PAGE-COUNT', pageCount} as const)
+
+export const setCurrentPage = (data: any) => ({type: 'PACKS/SET-CURRENT-PAGE', data} as const)
+
 
 // thunks
-export const getPacksTC = (): ThunkType => (dispatch) => {
+export const getPacksTC = (pCount: any, page: any): ThunkType => (dispatch) => {
     dispatch(setAppStatusAC("loading"))
-    packAPI.getPack({})
+    packAPI.getPack({pageCount: pCount, page:page})
         .then((res) => {
             dispatch(setCardPacks(res.data.cardPacks))
         })
@@ -59,22 +74,43 @@ export const getPacksTC = (): ThunkType => (dispatch) => {
         })
 }
 
-export const pageCount = (): ThunkType => (dispatch) => {
-    dispatch(setAppStatusAC("loading"))
-    packAPI.getPack({})
-        .then((res) => {
-            dispatch(setPageCount(res.data.pageCount))
-        })
-        .catch((error: AxiosError) => {
-            dispatch(setAppErrorAC(error.message))
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC("idle"))
-        })
-}
+//todo ТУТ Я КАКУЮ-ТО ХРЕНЬ ПРИДУМАЛ
+// export const pageCount = (): ThunkType => (dispatch) => {
+//     dispatch(setAppStatusAC("loading"))
+//     packAPI.getPack({})
+//         .then((res) => {
+//             dispatch(setPageCount(res.data.pageCount))
+//         })
+//         .catch((error: AxiosError) => {
+//             dispatch(setAppErrorAC(error.message))
+//         })
+//         .finally(() => {
+//             dispatch(setAppStatusAC("idle"))
+//         })
+// }
+
+// export const getCardsPackForPaginationThunk = (pageOfPagination: number): ThunkType => (dispatch) => {
+//     dispatch(setAppStatusAC("loading"))
+//     let pagePageCount = {
+//         page: pageOfPagination,
+//         pageCount: 10,
+//     }
+//     packAPI.getPack(pagePageCount)
+//         .then((res) => {
+//             dispatch(setCurrentPage(res.data.page))
+//         })
+//         .catch((error: AxiosError) => {
+//             console.log(error)
+//         })
+//         .finally(() => {
+//             dispatch(setAppStatusAC("idle"))
+//         })
+// }
+
 
 //type
 export type PackReducerActionsType =
     | ReturnType<typeof setCardPacks>
     | ReturnType<typeof setPageCount>
+    | ReturnType<typeof setCurrentPage>
 
