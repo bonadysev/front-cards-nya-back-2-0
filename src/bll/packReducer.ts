@@ -17,7 +17,7 @@ const initialState = {
     maxCardsCount: 0,
     minCardsCount: 0,
     page: 1,
-    pageCount: 3,
+    pageCount: 5,
     token: '',
     tokenDeathTime: 0,
 
@@ -73,40 +73,6 @@ export const getPacksTC = (pCount: any, page: any): ThunkType => (dispatch) => {
             dispatch(setAppStatusAC("idle"))
         })
 }
-
-//todo ТУТ Я КАКУЮ-ТО ХРЕНЬ ПРИДУМАЛ
-// export const pageCount = (): ThunkType => (dispatch) => {
-//     dispatch(setAppStatusAC("loading"))
-//     packAPI.getPack({})
-//         .then((res) => {
-//             dispatch(setPageCount(res.data.pageCount))
-//         })
-//         .catch((error: AxiosError) => {
-//             dispatch(setAppErrorAC(error.message))
-//         })
-//         .finally(() => {
-//             dispatch(setAppStatusAC("idle"))
-//         })
-// }
-
-// export const getCardsPackForPaginationThunk = (pageOfPagination: number): ThunkType => (dispatch) => {
-//     dispatch(setAppStatusAC("loading"))
-//     let pagePageCount = {
-//         page: pageOfPagination,
-//         pageCount: 10,
-//     }
-//     packAPI.getPack(pagePageCount)
-//         .then((res) => {
-//             dispatch(setCurrentPage(res.data.page))
-//         })
-//         .catch((error: AxiosError) => {
-//             console.log(error)
-//         })
-//         .finally(() => {
-//             dispatch(setAppStatusAC("idle"))
-//         })
-// }
-
 
 //type
 export type PackReducerActionsType =
