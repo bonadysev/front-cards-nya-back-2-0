@@ -47,6 +47,11 @@ export const packReducer = (state: InitialStateType = initialState, action: Pack
                 ...state,
                 page: action.data
             }
+        case "PACKS/SET-CARDS-PACK-TOTAL-COUNT":
+            return {
+                ...state,
+                cardPacksTotalCount:action.cardsPTC
+            }
         default:
             return state
     }
@@ -55,16 +60,17 @@ export const packReducer = (state: InitialStateType = initialState, action: Pack
 // actions
 export const setCardPacks = (cardPacks: any) => ({type: 'PACKS/SET-PACKS', cardPacks} as const)
 export const setPageCount = (pageCount: any) => ({type: 'PACKS/SET-PAGE-COUNT', pageCount} as const)
-
 export const setCurrentPage = (data: any) => ({type: 'PACKS/SET-CURRENT-PAGE', data} as const)
+export const setCardsPTC = (cardsPTC: any) => ({type: 'PACKS/SET-CARDS-PACK-TOTAL-COUNT', cardsPTC} as const)
 
 
 // thunks
 export const getPacksTC = (pCount: any, page: any): ThunkType => (dispatch) => {
     dispatch(setAppStatusAC("loading"))
-    packAPI.getPack({pageCount: pCount, page:page})
+    packAPI.getPack({pageCount: pCount, page: page})
         .then((res) => {
             dispatch(setCardPacks(res.data.cardPacks))
+            dispatch(setCardsPTC(res.data.cardPacksTotalCount))
         })
         .catch((error: AxiosError) => {
             dispatch(setAppErrorAC(error.message))
@@ -79,4 +85,5 @@ export type PackReducerActionsType =
     | ReturnType<typeof setCardPacks>
     | ReturnType<typeof setPageCount>
     | ReturnType<typeof setCurrentPage>
+    | ReturnType<typeof setCardsPTC>
 

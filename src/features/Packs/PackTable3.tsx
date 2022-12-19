@@ -24,9 +24,8 @@ import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {getPacksTC, setCurrentPage, setPageCount} from "../../bll/packReducer";
 import Button from "@mui/material/Button";
 import RangeSlider from "./RangeSlider";
-import SplitButton from "./SplitButton";
 import StateTextFields from "./StateTextFields";
-
+import UseRadioGroup from "./useRadioGroup";
 
 
 const headCells = [
@@ -121,10 +120,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     return (
         <>
             <Toolbar>
+                <UseRadioGroup/>
                 <StateTextFields/>
                 <RangeSlider/>
-                <SplitButton/>
-                <Button variant="contained">Add new pack</Button>
+                <Button variant="contained" sx={{flexGrow: 0, marginLeft: "auto"}}>Add new pack</Button>
             </Toolbar>
             <Toolbar
                 sx={{
@@ -235,7 +234,7 @@ export default function PackTable3() {
 
 //Pagination
     const handleChangePage = (event: unknown, newPage: number) => {
-        dispatch(setCurrentPage(newPage+1))
+        dispatch(setCurrentPage(newPage + 1))
         // setPage(newPage);
     };
 
@@ -323,7 +322,7 @@ export default function PackTable3() {
                                             <TableCell align="right">{row.cardsCount}</TableCell>
                                             <TableCell align="right">{row.created}</TableCell>
                                             <TableCell align="right">{row.user_name}</TableCell>
-                                            <Button variant="contained">Edit</Button>
+                                            <Button>Edit</Button>
                                         </TableRow>
 
                                     </>

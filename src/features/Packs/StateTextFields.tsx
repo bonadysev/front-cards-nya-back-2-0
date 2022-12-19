@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
 export default function StateTextFields() {
-    const [name, setName] = React.useState('Provide your text');
+    const [name, setName] = React.useState('');
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
     };
