@@ -17,7 +17,7 @@ const initialState = {
     maxCardsCount: 0,
     minCardsCount: 0,
     page: 1,
-    pageCount: 5,
+    pageCount: 3,
     token: '',
     tokenDeathTime: 0,
 
@@ -71,6 +71,7 @@ export const getPacksTC = (pCount: any, page: any): ThunkType => (dispatch) => {
         .then((res) => {
             dispatch(setCardPacks(res.data.cardPacks))
             dispatch(setCardsPTC(res.data.cardPacksTotalCount))
+            dispatch(setCurrentPage(res.data.page))
         })
         .catch((error: AxiosError) => {
             dispatch(setAppErrorAC(error.message))

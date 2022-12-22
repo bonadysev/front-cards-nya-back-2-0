@@ -191,7 +191,7 @@ export default function PackTable3() {
 
     React.useEffect(() => {
         dispatch(getPacksTC(pageCount, page))
-    }, [pageCount])
+    }, [pageCount,page])
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -234,7 +234,7 @@ export default function PackTable3() {
 
 //Pagination
     const handleChangePage = (event: unknown, newPage: number) => {
-        dispatch(setCurrentPage(newPage + 1))
+        dispatch(setCurrentPage(newPage+1))
         // setPage(newPage);
     };
 
@@ -260,12 +260,16 @@ export default function PackTable3() {
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
                 <EnhancedTableToolbar numSelected={selected.length}/>
+                <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense}/>}
+                    label="Dense padding"
+                />
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10, 25]}
                     component="div"
                     count={cardsPacksTotalCount}
                     rowsPerPage={pageCount}
-                    page={page}
+                    page={page-1}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
@@ -340,20 +344,7 @@ export default function PackTable3() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {/*<TablePagination*/}
-                {/*    rowsPerPageOptions={[3, 5, 10, 25]}*/}
-                {/*    component="div"*/}
-                {/*    count={packs.length}*/}
-                {/*    rowsPerPage={pageCount}*/}
-                {/*    page={page}*/}
-                {/*    onPageChange={handleChangePage}*/}
-                {/*    onRowsPerPageChange={handleChangeRowsPerPage}*/}
-                {/*/>*/}
             </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                label="Dense padding"
-            />
         </Box>
     );
 }

@@ -57,7 +57,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        friday level project
+                        Education cards
                     </Typography>
 
                     <Box sx={{flexGrow: 0, marginLeft:"auto"}}>
