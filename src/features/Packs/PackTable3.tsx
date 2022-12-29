@@ -25,7 +25,7 @@ import {getPacksTC, setCurrentPage, setPageCount} from "../../bll/packReducer";
 import Button from "@mui/material/Button";
 import RangeSlider from "./RangeSlider";
 import StateTextFields from "./StateTextFields";
-import UseRadioGroup from "./useRadioGroup";
+import BasicSelect from "./BasicSelect";
 
 
 const headCells = [
@@ -120,7 +120,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     return (
         <>
             <Toolbar>
-                <UseRadioGroup/>
+                <BasicSelect/>
                 <StateTextFields/>
                 <RangeSlider/>
                 <Button variant="contained" sx={{flexGrow: 0, marginLeft: "auto"}}>Add new pack</Button>
@@ -179,6 +179,8 @@ export default function PackTable3() {
     const pageCount = useAppSelector(state => state.pack.pageCount)
     const page = useAppSelector(state => state.pack.page)
     const cardsPacksTotalCount = useAppSelector(state => state.pack.cardPacksTotalCount)
+    const user_id = useAppSelector(state => state.auth.data._id)
+    const owner = useAppSelector(state => state.pack.owner)
 
     // const [rowsPerPage, setRowsPerPage] = React.useState(3);
     // const [page, setPage] = React.useState(0);
@@ -190,8 +192,14 @@ export default function PackTable3() {
 
 
     React.useEffect(() => {
-        dispatch(getPacksTC(pageCount, page))
-    }, [pageCount,page])
+        let variable;
+        if (owner === "my") {
+             variable = user_id
+        } else variable = ''
+
+        dispatch(getPacksTC(pageCount, page, variable))
+        // dispatch(getPacksTC())
+    }, [pageCount, page, owner])
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -234,7 +242,7 @@ export default function PackTable3() {
 
 //Pagination
     const handleChangePage = (event: unknown, newPage: number) => {
-        dispatch(setCurrentPage(newPage+1))
+        dispatch(setCurrentPage(newPage + 1))
         // setPage(newPage);
     };
 
@@ -269,7 +277,7 @@ export default function PackTable3() {
                     component="div"
                     count={cardsPacksTotalCount}
                     rowsPerPage={pageCount}
-                    page={page-1}
+                    page={page - 1}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />

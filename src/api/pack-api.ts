@@ -48,6 +48,8 @@ export type CardPack = {
     created: string
     updated: string
     user_name: string
+    rating: number
+    private: false
 }
 
 export type CardPack2 = {

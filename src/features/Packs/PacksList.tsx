@@ -14,6 +14,13 @@ export const PacksList = () => {
 
     return (
         <>
+            {/*{packs.length === 0*/}
+            {/*    ?  <Typography variant="h5" component="h5">у вас нет созданных колод</Typography>*/}
+            {/*    : <>*/}
+            {/*        <Typography variant="h5" component="h5">Packs List</Typography>*/}
+            {/*        <PackTable3/>*/}
+            {/*    </>*/}
+            {/*}*/}
             <Typography variant="h5" component="h5">Packs List</Typography>
             <PackTable3/>
         </>
