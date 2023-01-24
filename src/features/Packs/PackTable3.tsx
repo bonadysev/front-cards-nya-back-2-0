@@ -253,10 +253,10 @@ export default function PackTable3() {
         dispatch(setPageCount(parseInt(event.target.value)))
     };
 
-    const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDense(event.target.checked);
-        console.log('handleChangeDense' + event.target.checked)
-    };
+    // const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setDense(event.target.checked);
+    //     console.log('handleChangeDense' + event.target.checked)
+    // };
 
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
@@ -268,10 +268,10 @@ export default function PackTable3() {
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
                 <EnhancedTableToolbar numSelected={selected.length}/>
-                <FormControlLabel
-                    control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                    label="Dense padding"
-                />
+                {/*<FormControlLabel*/}
+                {/*    control={<Switch checked={dense} onChange={handleChangeDense}/>}*/}
+                {/*    label="Dense padding"*/}
+                {/*/>*/}
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10, 25]}
                     component="div"
