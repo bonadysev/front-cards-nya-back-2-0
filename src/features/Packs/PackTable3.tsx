@@ -130,50 +130,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 <StateTextFields/>
                 <RangeSlider/>
                 <Button variant="contained" sx={{flexGrow: 0, marginLeft: "auto"}} onClick={()=>addNewPackHandler('-NewPack-')}>Add new pack</Button>
-            </Toolbar>
-            <Toolbar
-                sx={{
-                    pl: {sm: 2},
-                    pr: {xs: 1, sm: 1},
-                    ...(numSelected > 0 && {
-                        bgcolor: (theme) =>
-                            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                    }),
-                }}
-            >
-                {numSelected > 0 ? (
-                    <Typography
-                        sx={{flex: '1 1 100%'}}
-                        color="inherit"
-                        variant="subtitle1"
-                        component="div"
-                    >
-                        {numSelected} selected
-                    </Typography>
-                ) : (
-                    <Typography
-                        sx={{flex: '1 1 100%'}}
-                        variant="h6"
-                        id="tableTitle"
-                        component="div"
-                    >
-                        Pack Page
-                    </Typography>
-                )}
-                {numSelected > 0 ? (
-                    <Tooltip title="Delete">
-                        <IconButton>
-                            <DeleteIcon/>
-                        </IconButton>
-                    </Tooltip>
-                ) : (
-                    <Tooltip title="Filter list">
-                        <IconButton>
-                            <FilterListIcon/>
-                        </IconButton>
-                    </Tooltip>
-
-                )}
+                <IconButton>
+                    <FilterListIcon/>
+                </IconButton>
             </Toolbar>
         </>
     );
@@ -215,16 +174,6 @@ export default function PackTable3() {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-    };
-
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.checked)
-        if (event.target.checked) {
-            const newSelected = packs.map((n) => n.name);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
     };
 
     const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
@@ -279,10 +228,6 @@ export default function PackTable3() {
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
                 <EnhancedTableToolbar numSelected={selected.length}/>
-                {/*<FormControlLabel*/}
-                {/*    control={<Switch checked={dense} onChange={handleChangeDense}/>}*/}
-                {/*    label="Dense padding"*/}
-                {/*/>*/}
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10, 25]}
                     component="div"
@@ -298,14 +243,6 @@ export default function PackTable3() {
                         aria-labelledby="tableTitle"
                         size={dense ? 'small' : 'medium'}
                     >
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={packs.length}
-                        />
                         <TableBody>
                             {/* if you don't need to support IE11, you can replace the `stableSort` call with:
               rows.sort(getComparator(order, orderBy)).slice() */}
@@ -325,15 +262,7 @@ export default function PackTable3() {
                                             key={row.name}
                                             selected={isItemSelected}
                                         >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>
+                                            <TableCell padding="checkbox"></TableCell>
                                             <TableCell
                                                 component="th"
                                                 id={labelId}
