@@ -17,7 +17,7 @@ const initialState = {
     maxCardsCount: 0,
     minCardsCount: 0,
     page: 1,
-    pageCount: 3,
+    pageCount: 5,
     token: '',
     tokenDeathTime: 0,
 
@@ -57,6 +57,11 @@ export const packReducer = (state: InitialStateType = initialState, action: Pack
                 ...state,
                 owner:action.owner
             }
+        // case "PACKS/ADD-NEW-PACK":
+        //     return {
+        //         ...state,
+        //         packName: action.newPack
+        //     }
         default:
             return state
     }
@@ -68,7 +73,7 @@ export const setPageCount = (pageCount: any) => ({type: 'PACKS/SET-PAGE-COUNT', 
 export const setCurrentPage = (data: any) => ({type: 'PACKS/SET-CURRENT-PAGE', data} as const)
 export const setCardsPTC = (cardsPTC: any) => ({type: 'PACKS/SET-CARDS-PACK-TOTAL-COUNT', cardsPTC} as const)
 export const setOwnerAC = (owner: 'all' | 'my') => ({type: 'PACKS/SET-OWNER', owner} as const)
-
+export const addNewPackAC = (newPack: string) => ({type: 'PACKS/ADD-NEW-PACK', newPack} as const)
 
 
 // thunks
@@ -89,6 +94,34 @@ export const getPacksTC = (pCount: any, page: any, user_id:string): ThunkType =>
         })
 }
 
+export const addNewPackTC = (newPack: string): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    packAPI.addNewPack(newPack)
+        .then((res) => {
+            dispatch(addNewPackAC(newPack))
+        })
+        .catch((error: AxiosError) => {
+            dispatch(setAppErrorAC(error.message))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC("idle"))
+        })
+}
+
+export const removePackTC = (idPack: string): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC("loading"))
+    packAPI.deletePack(idPack)
+        .then((res) => {
+
+        })
+        .catch((error: AxiosError) => {
+            dispatch(setAppErrorAC(error.message))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC("idle"))
+        })
+}
+
 //type
 export type PackReducerActionsType =
     | ReturnType<typeof setCardPacks>
@@ -96,5 +129,6 @@ export type PackReducerActionsType =
     | ReturnType<typeof setCurrentPage>
     | ReturnType<typeof setCardsPTC>
     | ReturnType<typeof setOwnerAC>
+    | ReturnType<typeof addNewPackAC>
 
 

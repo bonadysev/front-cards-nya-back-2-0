@@ -14,6 +14,18 @@ export const packAPI = {
                 user_id
             }
         })
+    },
+    addNewPack(newPack:string){
+        return instance.post('/cards/pack', {cardsPack: {
+                name:newPack
+            }})
+    },
+    deletePack(id:string){
+        return instance.delete('/cards/pack',{
+            params: {
+                id
+            }
+        })
     }
 }
 

@@ -21,11 +21,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
 import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {getPacksTC, setCurrentPage, setPageCount} from "../../bll/packReducer";
+import {addNewPackTC, getPacksTC, removePackTC, setCurrentPage, setPageCount} from "../../bll/packReducer";
 import Button from "@mui/material/Button";
 import RangeSlider from "./RangeSlider";
 import StateTextFields from "./StateTextFields";
 import BasicSelect from "./BasicSelect";
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 
 const headCells = [
@@ -115,7 +116,12 @@ interface EnhancedTableToolbarProps {
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
+    const dispatch = useAppDispatch()
     const {numSelected} = props;
+
+    const addNewPackHandler = (newPack:string) =>{
+        dispatch(addNewPackTC(newPack))
+    }
 
     return (
         <>
@@ -123,7 +129,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 <BasicSelect/>
                 <StateTextFields/>
                 <RangeSlider/>
-                <Button variant="contained" sx={{flexGrow: 0, marginLeft: "auto"}}>Add new pack</Button>
+                <Button variant="contained" sx={{flexGrow: 0, marginLeft: "auto"}} onClick={()=>addNewPackHandler('-NewPack-')}>Add new pack</Button>
             </Toolbar>
             <Toolbar
                 sx={{
@@ -201,6 +207,7 @@ export default function PackTable3() {
         // dispatch(getPacksTC())
     }, [pageCount, page, owner])
 
+
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
         property: keyof any,
@@ -257,6 +264,10 @@ export default function PackTable3() {
     //     setDense(event.target.checked);
     //     console.log('handleChangeDense' + event.target.checked)
     // };
+
+    const deletePackHandler = (idPack:string) => {
+        dispatch(removePackTC(idPack))
+    }
 
     const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
@@ -334,7 +345,13 @@ export default function PackTable3() {
                                             <TableCell align="right">{row.cardsCount}</TableCell>
                                             <TableCell align="right">{row.created}</TableCell>
                                             <TableCell align="right">{row.user_name}</TableCell>
-                                            <Button>Edit</Button>
+                                            <TableCell align="right">
+                                                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                                                    <Button onClick={()=> {console.log(row._id)}}>Learn</Button>
+                                                    <Button>Edit</Button>
+                                                    <Button onClick={()=> {deletePackHandler(row._id)}}>Delete</Button>
+                                                </ButtonGroup>
+                                            </TableCell>
                                         </TableRow>
 
                                     </>
